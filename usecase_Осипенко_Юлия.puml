@@ -1,0 +1,51 @@
+```puml
+@startuml
+
+
+actor "Покупатель" as Customer
+actor "Администратор" as Admin
+actor "Платежная система" as PaymentSystem <<External System>>
+
+
+rectangle "Интернет-магазин" {
+
+  
+  usecase "Регистрация в системе" as UC_Register
+  usecase "Вход в систему" as UC_Login
+  usecase "Поиск товаров" as UC_Search
+  usecase "Просмотр каталога" as UC_BrowseCatalog
+  usecase "Добавление товара в корзину" as UC_AddToCart
+  usecase "Оформление заказа" as UC_Checkout
+  usecase "Оплата заказа" as UC_Pay
+  usecase "Управление каталогом товаров" as UC_ManageCatalog
+  usecase "Управление заказами" as UC_ManageOrders
+
+  
+  UC_Checkout ..> UC_Login : <<include>>
+  UC_Pay ..> UC_Checkout : <<include>>
+  UC_AddToCart ..> UC_BrowseCatalog : <<include>>
+
+  
+  UC_Search ..> UC_BrowseCatalog : <<extend>>
+
+  
+  UC_ManageCatalog --|> UC_BrowseCatalog
+  UC_ManageOrders --|> UC_Checkout
+}
+
+
+Customer --> UC_Register
+Customer --> UC_Login
+Customer --> UC_Search
+Customer --> UC_BrowseCatalog
+Customer --> UC_AddToCart
+Customer --> UC_Checkout
+
+Admin --> UC_Login
+Admin --> UC_ManageCatalog
+Admin --> UC_ManageOrders
+
+PaymentSystem --> UC_Pay
+
+@enduml
+```
